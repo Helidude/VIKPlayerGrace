@@ -46,29 +46,10 @@ namespace VIKPlayerGrace
             if (_config?.Data == null)
                 _config = new Persistent<GraceConfig>(configFile, new GraceConfig());
 
-            _sessionManager = Torch.Managers.GetManager<TorchSessionManager>();
-            if (_sessionManager != null)
-                _sessionManager.SessionStateChanged += SessionChanged;
-            else
-                Log.Warn("No session manager");
-
             var pgmr = new GraceManager(torch);
             torch.Managers.AddManager(pgmr);
 
             Instance = this;
-        }
-
-        private void SessionChanged(ITorchSession session, TorchSessionState state)
-        {
-            var mpMan = Torch.CurrentSession.Managers.GetManager<IMultiplayerManagerServer>();
-            switch (state)
-            {
-                case TorchSessionState.Loaded:
-                    SessionPatches.Refresh();
-                    //SessionPatches.AutoRemove(); 
-                    Log.Info("Players loaded from config");
-                    break;
-            }
         }
     }
 }

@@ -162,7 +162,7 @@ namespace VIKPlayerGrace
             // Save Config file
             Plugin.Save();
             SessionPatches.Refresh();
-            Log.Info("Configfile and Session updated!");
+            Log.Info("Config and Session updated!");
         }
     }
 }

@@ -17,9 +17,7 @@ namespace VIKPlayerGrace
 
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public GraceManager(ITorchBase torchInstance) : base(torchInstance)
-        {
-        }
+        public GraceManager(ITorchBase torchInstance) : base(torchInstance) {}
 
         public override void Attach()
         {
@@ -39,22 +37,16 @@ namespace VIKPlayerGrace
         {
             base.Detach();
 
-          
-
             _patchManager.FreeContext(_ctx);
         }
 
         private void SessionChanged(ITorchSession session, TorchSessionState state)
         {
+            var mpMan = Torch.CurrentSession.Managers.GetManager<IMultiplayerManagerServer>();
             switch (state)
             {
                 case TorchSessionState.Loaded:
-                    Task.Delay(3000).ContinueWith((t) =>
-                    {
-                        Log.Debug("Patching MyLargeTurretBasePatch");
-
-                        _patchManager.Commit();
-                    });
+                    SessionPatches.Refresh();
                     break;
             }
         }
