@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using NLog.Fluent;
 using Torch.API.Session;
 using VRage.Game;
 
@@ -18,7 +19,7 @@ namespace VIKPlayerGrace
 {
     public partial class GraceControl : UserControl
     {
-        public static GracePlugin Plugin { get; private set; }
+        public static GracePlugin Plugin { get; set; }
 
         private PlayerData selectedDatagridRow = null; 
 
@@ -52,7 +53,6 @@ namespace VIKPlayerGrace
             if (IsDupe(playerId) || gracePeriod < 1)
                 return;
 
-            Plugin.Config.PlayersOnLeave.Clear(); // Clear the config file for Players On Leave
             PlayersList.PlayerList.Add(new PlayerData // Add the new player
             {
                 PlayerId = playerId,
@@ -61,13 +61,7 @@ namespace VIKPlayerGrace
                 GracePeriodTo = GraceCalc(gracePeriod)
             });
 
-            foreach (var playerData in PlayersList.PlayerList) // Add all the players to config file
-            {
-                Plugin.Config.PlayersOnLeave.Add(playerData);
-            }
-            
-            Plugin.Save(); // Save Config file
-            SessionPatches.Refresh(); // Apply the changes to session manager
+            ConfWriter(PlayersList.PlayerList);
         }
 
         private void Button_Click_Delete(object sender, RoutedEventArgs e)
@@ -79,15 +73,9 @@ namespace VIKPlayerGrace
             if (itemToRemove != null)
                 PlayersList.PlayerList.Remove(itemToRemove);
 
-            Plugin.Config.PlayersOnLeave.Clear(); // Clear the config file for Players On Leave
-            foreach (var playerData in PlayersList.PlayerList) // Add all the players back to config file
-            {
-                Plugin.Config.PlayersOnLeave.Add(playerData);
-            }
-
-            Plugin.Save(); // Save Config file
             ButtonDelete.IsEnabled = false;
-            SessionPatches.Refresh();
+
+            ConfWriter(PlayersList.PlayerList);
             SessionPatches.Remove(selectedDatagridRow.PlayerId);
         }
 
@@ -106,7 +94,7 @@ namespace VIKPlayerGrace
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid dg = sender as DataGrid;
-            PlayerData pd = dg.SelectedItem as PlayerData;
+            var pd = dg.SelectedItem as PlayerData;
 
             if (pd != null)
             {
@@ -158,6 +146,23 @@ namespace VIKPlayerGrace
         public DateTime GraceCalc(int days)
         {
             return DateTime.Now + TimeSpan.FromDays(days);
-        }   
+        }
+
+        public static void ConfWriter(List<PlayerData> pdList)
+        {
+            // Clear the config file for Players On Leave
+            Plugin.Config.PlayersOnLeave.Clear();
+
+            // Add all the players back to config file
+            foreach (var playerData in pdList)
+            {
+                Plugin.Config.PlayersOnLeave.Add(playerData);
+            }
+
+            // Save Config file
+            Plugin.Save();
+            SessionPatches.Refresh();
+            Log.Info("Configfile and Session updated!");
+        }
     }
 }

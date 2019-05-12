@@ -4,18 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sandbox.Engine.Voxels;
 
 namespace VIKPlayerGrace
 {
     public static class SessionPatches
     {
-
+        /// <summary>
+        /// Loads all players on leave from config file and applies it to the running session 
+        /// </summary>
         public static void Refresh()
         {         
             PlayersList.PlayerList.Clear();
-            foreach (var player in GraceControl.Plugin.Config.PlayersOnLeave) // Loads Players from config file
+            foreach (var player in GraceControl.Plugin.Config.PlayersOnLeave) 
             {
-                PlayersList.PlayerList.Add(new PlayerData // Add Players from file to List
+                // Add Players from file to List<PlayerData>
+                PlayersList.PlayerList.Add(new PlayerData
                 {
                     PlayerId = player.PlayerId,
                     PlayerName = player.PlayerName,
@@ -24,23 +28,22 @@ namespace VIKPlayerGrace
                 });
             }
 
-            // Update LastLoginTime for users in List. Also check if users has expired
+            // Process List and apply to session
             foreach (MyIdentity identity in MySession.Static.Players.GetAllIdentities())
             {
                 foreach (var playerData in PlayersList.PlayerList)
                 {
                     if (playerData.PlayerId == identity.IdentityId)
                         identity.LastLoginTime = playerData.GracePeriodTo;
-
-                    if (playerData.GracePeriodTo > DateTime.Now)
-                        PlayersList.PlayerList.Remove(playerData);
                 }
             }
         }
 
+        /// <summary>
+        /// Set LastLoginTime to DateTime.now if player is deleted. 
+        /// </summary>
         public static void Remove(long pid)
         {
-            // Set LastLoginTime to DateTime.now if player is deleted. 
             foreach (MyIdentity identity in MySession.Static.Players.GetAllIdentities())
             {
                 if (pid == identity.IdentityId)
@@ -48,13 +51,29 @@ namespace VIKPlayerGrace
             }
         }
 
+        /// <summary>
+        /// Checks if any of the players grace period has expired and removes them from the list 
+        /// </summary>
         public static void AutoRemove()
         {
-            // Checks if any of the players grace period has expired and removes them from the list 
+            // Load Players from file
+            PlayersList.PlayerList.Clear();
+            foreach (var player in GraceControl.Plugin.Config.PlayersOnLeave)
+            {
+                // Add Players from file to List<PlayerData>
+                PlayersList.PlayerList.Add(new PlayerData
+                {
+                    PlayerId = player.PlayerId,
+                    PlayerName = player.PlayerName,
+                    GraceGrantedAt = player.GraceGrantedAt,
+                    GracePeriodTo = player.GracePeriodTo
+                });
+            }
+
             if (PlayersList.PlayerList == null)
                 return;
 
-            foreach (var playerData in PlayersList.PlayerList)
+            foreach (var playerData in PlayersList.PlayerList.ToList())
             {
                 if (playerData.GracePeriodTo > DateTime.Now)
                 {
@@ -62,14 +81,11 @@ namespace VIKPlayerGrace
                 }
             }
 
-            GraceControl.Plugin.Config.PlayersOnLeave.; // Clear the config file for Players On Leave
-            foreach (var playerData in PlayersList.PlayerList) // Add all the reminding players back to config file
-            {
-                GraceControl.Plugin.Config.PlayersOnLeave.Add(playerData);
-            }
+            // Add all the reminding players back to config file
+            GraceControl.ConfWriter(PlayersList.PlayerList);
 
-            GraceControl.Plugin.Save(); // Save Config file
-            Refresh(); // Apply the changes to session manager
+            // Apply the changes to session manager
+            Refresh();
         }
     }
 }

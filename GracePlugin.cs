@@ -65,7 +65,7 @@ namespace VIKPlayerGrace
             {
                 case TorchSessionState.Loaded:
                     SessionPatches.Refresh();
-                    //SessionPatches.AutoRemove(); // BUGGED
+                    //SessionPatches.AutoRemove(); 
                     Log.Info("Players loaded from config");
                     break;
             }
