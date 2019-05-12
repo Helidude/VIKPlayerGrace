@@ -1,5 +1,4 @@
-﻿using Sandbox.Game.World;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using Torch;
 

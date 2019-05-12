@@ -1,14 +1,11 @@
 ﻿using NLog;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Torch;
 using Torch.API;
-using Torch.API.Managers;
 using Torch.API.Plugins;
-using Torch.API.Session;
-using Torch.Session;
+
 
 namespace VIKPlayerGrace
 {
@@ -16,7 +13,6 @@ namespace VIKPlayerGrace
     {
         private GraceControl _control;
         private Persistent<GraceConfig> _config;
-        private TorchSessionManager _sessionManager;
 
         public static GracePlugin Instance { get; private set; }
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();

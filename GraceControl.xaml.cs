@@ -1,19 +1,10 @@
 ﻿using Sandbox.Game.World;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using NLog.Fluent;
-using Torch.API.Session;
-using VRage.Game;
-
-
-// TODO Add null checks, try/catch and logs
 
 namespace VIKPlayerGrace
 {

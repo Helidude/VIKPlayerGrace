@@ -1,5 +1,4 @@
 ﻿using NLog;
-using System.Threading.Tasks;
 using Torch.API;
 using Torch.API.Managers;
 using Torch.API.Session;
