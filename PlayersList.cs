@@ -2,7 +2,7 @@
 
 namespace VIKPlayerGrace
 {
-    public static class PlayersList
+    public class PlayersList
     {
         public static List<PlayerData> PlayerList { get; set; }    
     }

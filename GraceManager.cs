@@ -45,7 +45,7 @@ namespace VIKPlayerGrace
             switch (state)
             {
                 case TorchSessionState.Loaded:
-                    SessionPatches.Refresh();
+                    SessionPatches.ApplySession();
                     break;
             }
         }

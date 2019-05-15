@@ -13,19 +13,13 @@
             <ComboBox Width="220" Margin="3" x:Name="ComboBoxPlayers" 
                       SelectedIndex="{Binding PlayerName}" 
                       Loaded="ComboBoxPlayers_OnLoaded" SelectionChanged="ComboBoxPlayers_SelectionChanged" />
-
-            <Label Margin="0,10,3,0" 
-                   Content="Grace period (Days)" />
-            <TextBox Width="40" Margin="3,0,0,0" HorizontalAlignment="Left"
-                     x:Name="TextBoxGrace" />
-
-            
+    
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Width="90" Margin="3,50,5,3" 
                         x:Name="ButtonSave"
                         Content="Save"
                         IsEnabled="False"
-                        Click="SaveConfig_OnClick" />
+                        Click="SavePlayer_OnClick" />
                 <Button Width="90" Margin="3,50,5,3" 
                         x:Name="ButtonDelete"
                         IsEnabled="False"
@@ -48,8 +42,8 @@
                     <DataGridTextColumn Header="Player Name:" 
                                         Binding="{Binding Path=PlayerName}" />
                     <DataGridTextColumn Width="*"
-                                        Header="On Leave Until:" 
-                                        Binding="{Binding Path=GracePeriodTo, StringFormat={}\{0: dddd dd/MM/yyyy HH:mm\}}" />
+                                        Header="Grace Granted::" 
+                                        Binding="{Binding Path=GraceGrantedAt, StringFormat={}\{0: dddd dd/MM/yyyy HH:mm\}}" />
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

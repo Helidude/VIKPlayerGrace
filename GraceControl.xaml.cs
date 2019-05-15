@@ -12,44 +12,39 @@ namespace VIKPlayerGrace
     {
         public static GracePlugin Plugin { get; set; }
 
-        private PlayerData selectedDatagridRow = null; 
+        private PlayerData selectedDatagridRow = null;
 
         public GraceControl()
         {
-            InitializeComponent();    
+            InitializeComponent();
+            PlayersList.PlayerList = new List<PlayerData>();
         }
 
         public GraceControl(GracePlugin plugin) : this()
         {
             Plugin = plugin;
             DataContext = plugin.Config;
-
-            PlayersList.PlayerList = new List<PlayerData>();
         }
 
         private void ComboBoxPlayers_OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Gets all players on server and loads them into ComboBox
+            // Get all players on server and loads them into ComboBox
             var comboboxPlayers = sender as ComboBox;
-            comboboxPlayers.ItemsSource = GetAllPlayers().Select(x => x.DisplayName);
+            comboboxPlayers.ItemsSource = GetFromSession.GetAllPlayers().Select(x => x.DisplayName);
         }
 
-        private void SaveConfig_OnClick(object sender, RoutedEventArgs e)
+        private void SavePlayer_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(TextBoxGrace.Text, out var gracePeriod))
-                return;
-
             var selectedPlayer = ComboBoxPlayers.SelectedValue.ToString();
-            var playerId = GetPlayerIdByName(selectedPlayer);
-            if (IsDupe(playerId) || gracePeriod < 1)
+            var playerId = GetFromSession.GetPlayerIdByName(selectedPlayer);
+            if (IsDupe(playerId))
                 return;
 
-            PlayersList.PlayerList.Add(new PlayerData // Add the new player
+            PlayersList.PlayerList.Add(new PlayerData
             {
                 PlayerId = playerId,
                 PlayerName = selectedPlayer,
-                GraceGrantedAt = DateTime.Now,
-                GracePeriodTo = GraceCalc(gracePeriod)
+                GraceGrantedAt = DateTime.Now
             });
 
             ConfWriter(PlayersList.PlayerList);
@@ -67,7 +62,6 @@ namespace VIKPlayerGrace
             ButtonDelete.IsEnabled = false;
 
             ConfWriter(PlayersList.PlayerList);
-            SessionPatches.Remove(selectedDatagridRow.PlayerId);
         }
 
         private void ComboBoxPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,7 +69,7 @@ namespace VIKPlayerGrace
             ComboBox cb = sender as ComboBox;
             var playerName = cb.SelectedValue.ToString();
 
-            var playerId = GetPlayerIdByName(playerName);
+            var playerId = GetFromSession.GetPlayerIdByName(playerName);
             if (IsDupe(playerId))
                 ButtonSave.IsEnabled = false;
             else
@@ -94,8 +88,12 @@ namespace VIKPlayerGrace
             ButtonDelete.IsEnabled = true;
         }
 
-       
-        private bool IsDupe(Int64 pid)
+        /// <summary>
+        /// Check if player is already added
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        private bool IsDupe(long pid)
         {
             if (PlayersList.PlayerList == null)
                 return false;
@@ -109,42 +107,12 @@ namespace VIKPlayerGrace
             return false;
         }
 
-        public static List<MyIdentity> GetAllPlayers()
-        {
-            // Populate the list when plugin loads
-            var idents = MySession.Static.Players.GetAllIdentities().ToList();
-            var npcs = MySession.Static.Players.GetNPCIdentities().ToList();
-
-            return idents.Where(i => !npcs.Any(n => n == i.IdentityId)).ToList();
-        }
-
-        public static long GetPlayerIdByName(string name)
-        {
-            if (!long.TryParse(name, out long id))
-            {
-                foreach (var identity in MySession.Static.Players.GetAllIdentities())
-                {
-                    if (identity.DisplayName == name)
-                    {
-                        return identity.IdentityId;
-                    }
-                }
-            }
-
-            return 0;
-        }
-
-        public DateTime GraceCalc(int days)
-        {
-            return DateTime.Now + TimeSpan.FromDays(days);
-        }
-
         public static void ConfWriter(List<PlayerData> pdList)
         {
-            // Clear the config file for Players On Leave
+            // Clear the config file for Players
             Plugin.Config.PlayersOnLeave.Clear();
 
-            // Add all the players back to config file
+            // Add all the players back from the temporary list
             foreach (var playerData in pdList)
             {
                 Plugin.Config.PlayersOnLeave.Add(playerData);
@@ -152,7 +120,7 @@ namespace VIKPlayerGrace
 
             // Save Config file
             Plugin.Save();
-            SessionPatches.Refresh();
+            SessionPatches.ApplySession();
             Log.Info("Config and Session updated!");
         }
     }
