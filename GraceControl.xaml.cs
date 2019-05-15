@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace VIKPlayerGrace
 {
-    public partial class GraceControl : UserControl
+    public partial class GraceControl
     {
         public static GracePlugin Plugin { get; set; }
         public static readonly Logger Log = LogManager.GetLogger("GraceControl");

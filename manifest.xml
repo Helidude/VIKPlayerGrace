@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <PluginManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>PlayerGrace</Name>
-  <Guid>481be888-7491-40f0-bf17-d21898d5de07</Guid>
+  <Guid>0f740832-0249-40cd-9a00-62d60da6755f</Guid>
   <Repository>VIKPlayerGrace</Repository>
-  <Version>v0.9.5</Version>
+  <Version>v0.9.6</Version>
 </PluginManifest>
