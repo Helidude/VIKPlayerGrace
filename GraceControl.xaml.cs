@@ -1,10 +1,9 @@
-﻿using Sandbox.Game.World;
+﻿using NLog.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using NLog.Fluent;
 
 namespace VIKPlayerGrace
 {
