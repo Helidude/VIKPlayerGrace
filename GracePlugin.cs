@@ -6,7 +6,6 @@ using Torch;
 using Torch.API;
 using Torch.API.Plugins;
 
-
 namespace VIKPlayerGrace
 {
     public class GracePlugin : TorchPluginBase, IWpfPlugin
@@ -15,7 +14,7 @@ namespace VIKPlayerGrace
         private Persistent<GraceConfig> _config;
 
         public static GracePlugin Instance { get; private set; }
-        public static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        public static readonly Logger Log = LogManager.GetLogger("GracePlugin");
 
         public GraceConfig Config => _config?.Data;
 

@@ -14,7 +14,7 @@ namespace VIKPlayerGrace
         private PatchContext _ctx;
         private TorchSessionManager _sessionManager;
 
-        public static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        public static readonly Logger Log = LogManager.GetLogger("GraceManager");
 
         public GraceManager(ITorchBase torchInstance) : base(torchInstance) {}
 

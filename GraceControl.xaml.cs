@@ -1,4 +1,4 @@
-﻿using NLog.Fluent;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace VIKPlayerGrace
     public partial class GraceControl : UserControl
     {
         public static GracePlugin Plugin { get; set; }
+        public static readonly Logger Log = LogManager.GetLogger("GraceControl");
 
         private PlayerData selectedDatagridRow = null;
 

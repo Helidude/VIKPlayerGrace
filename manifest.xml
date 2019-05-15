@@ -2,6 +2,6 @@
 <PluginManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>PlayerGrace</Name>
   <Guid>481be888-7491-40f0-bf17-d21898d5de07</Guid>
-  <Repository>VIK-PlayerGrace</Repository>
-  <Version>v0.9.2</Version>
+  <Repository>VIKPlayerGrace</Repository>
+  <Version>v0.9.5</Version>
 </PluginManifest>
