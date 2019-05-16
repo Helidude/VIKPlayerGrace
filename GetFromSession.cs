@@ -12,7 +12,9 @@ namespace VIKPlayerGrace
             var idents = MySession.Static.Players.GetAllIdentities().ToList();
             var npcs = MySession.Static.Players.GetNPCIdentities().ToList();
 
-            return idents.Where(i => !npcs.Any(n => n == i.IdentityId)).ToList();
+            return idents.Where(i => !npcs.Any(n => n == i.IdentityId))
+                .OrderBy(i => i.DisplayName)
+                .ToList();
         }
 
         public static long GetPlayerIdByName(string name)

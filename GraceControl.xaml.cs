@@ -17,7 +17,6 @@ namespace VIKPlayerGrace
         public GraceControl()
         {
             InitializeComponent();
-            PlayersList.PlayerList = new List<PlayerData>();
         }
 
         public GraceControl(GracePlugin plugin) : this()
