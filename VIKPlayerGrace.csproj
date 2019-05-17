@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetFromSession.cs" />
+    <Compile Include="GraceCommands.cs" />
     <Compile Include="SessionPatches.cs" />
     <Compile Include="GraceConfig.cs" />
     <Compile Include="GraceControl.xaml.cs">
