@@ -61,8 +61,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DupeCheck.cs" />
     <Compile Include="GetFromSession.cs" />
     <Compile Include="GraceCommands.cs" />
+    <Compile Include="PlayerControl.cs" />
     <Compile Include="SessionPatches.cs" />
     <Compile Include="GraceConfig.cs" />
     <Compile Include="GraceControl.xaml.cs">
