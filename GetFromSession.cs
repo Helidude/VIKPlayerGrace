@@ -8,6 +8,11 @@ namespace VIKPlayerGrace
     {
         public static List<MyIdentity> GetAllPlayers()
         {
+            if (MySession.Static == null)
+            {
+                return new List<MyIdentity>();
+            }
+
             // Populate the list when plugin loads
             var idents = MySession.Static.Players.GetAllIdentities().ToList();
             var npcs = MySession.Static.Players.GetNPCIdentities().ToList();
