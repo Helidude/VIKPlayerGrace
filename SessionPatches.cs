@@ -10,7 +10,7 @@ namespace VIKPlayerGrace
         /// </summary>
         public static void ApplySession()
         {
-            if (GraceControl.Plugin.Config.PlayersOnLeave == null)
+            if (GraceControl.Plugin.Config.PlayersOnLeave == null || MySession.Static == null)
                 return;
 
             PlayersList.PlayerList.Clear();

@@ -29,6 +29,8 @@ namespace VIKPlayerGrace
         {
             var playerId = GetFromSession.GetPlayerIdByName(playerName);
             PlayerControl.Remove(playerId);
+
+            Context.Respond($"{playerName} successfully removed");
         }
     }
 }
