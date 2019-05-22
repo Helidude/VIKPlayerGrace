@@ -17,7 +17,7 @@ namespace VIKPlayerGrace
             var playerId = GetFromSession.GetPlayerIdByName(playerName);
             if (DupeCheck.IsDupe(playerId))
             {
-                Context.Respond($"{playerName} already added");
+                Context.Respond($"{playerName} already added or does not exist");
                 return;
             }
 

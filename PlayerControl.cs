@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NLog;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VIKPlayerGrace
 {
     class PlayerControl
     {
+        public static readonly Logger Log = LogManager.GetLogger("PlayerGrace PlayerControl");
+
         public static void Remove(long pid)
         {
             var itemToRemove = PlayersList.PlayerList.SingleOrDefault(r => r.PlayerId == pid);
@@ -31,6 +31,7 @@ namespace VIKPlayerGrace
             });
 
             GraceControl.ConfWriter(PlayersList.PlayerList);
+            Log.Info($"Player {pName} added");
         }
     }
 }

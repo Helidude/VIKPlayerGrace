@@ -15,8 +15,8 @@ namespace VIKPlayerGrace
         /// <returns></returns>
         public static bool IsDupe(long pid)
         {
-            if (PlayersList.PlayerList == null)
-                return false;
+            if (pid == 0)
+                return true;
 
             foreach (var playerData in PlayersList.PlayerList)
             {

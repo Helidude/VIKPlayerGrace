@@ -52,7 +52,7 @@
                     <DataGridTextColumn Header="Player Name:" 
                                         Binding="{Binding Path=PlayerName}" />
                     <DataGridTextColumn Width="*"
-                                        Header="Grace Granted::" 
+                                        Header="Grace Granted:" 
                                         Binding="{Binding Path=GraceGrantedAt, StringFormat={}\{0: dddd dd/MM/yyyy HH:mm\}}" />
                 </DataGrid.Columns>
             </DataGrid>
