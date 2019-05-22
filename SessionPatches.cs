@@ -1,5 +1,6 @@
 ﻿using Sandbox.Game.World;
 using System;
+using System.Linq;
 
 namespace VIKPlayerGrace
 {
@@ -25,13 +26,20 @@ namespace VIKPlayerGrace
                 });
             }
 
+            if (PlayersList.PlayerList == null || !PlayersList.PlayerList.Any())
+                return;
+
             // Process List and apply to session
             foreach (MyIdentity identity in MySession.Static.Players.GetAllIdentities())
             {
-                foreach (var playerData in PlayersList.PlayerList)
+                foreach (var playerData in PlayersList.PlayerList.ToList())
                 {
                     if (playerData.PlayerId == identity.IdentityId)
                         identity.LastLoginTime = DateTime.Now;
+
+                    // Remove Players that has logged back in
+                    if (identity.LastLogoutTime > playerData.GraceGrantedAt && GraceControl.Plugin.Config.AutoRemove)
+                        PlayerControl.Remove(playerData.PlayerId);
                 }
             }
         }

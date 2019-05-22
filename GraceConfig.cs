@@ -6,6 +6,9 @@ namespace VIKPlayerGrace
 {
     public class GraceConfig : ViewModel
     {
+        private bool _autoRemove;
+        public bool AutoRemove { get => _autoRemove; set => SetValue(ref _autoRemove, value); }
+
         public ObservableCollection<PlayerData> PlayersOnLeave { get; } = new ObservableCollection<PlayerData>();
     }
 
