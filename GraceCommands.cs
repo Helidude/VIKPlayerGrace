@@ -8,6 +8,8 @@ namespace VIKPlayerGrace
 {
     public class GraceCommands : CommandModule
     {
+        public static readonly Logger Log = LogManager.GetLogger("GraceCommands");
+
         [Command("grace add", "Grant a player extended leave")]
         [Permission(MyPromoteLevel.SpaceMaster)]
         public void GraceAdd(string playerName)
@@ -21,6 +23,7 @@ namespace VIKPlayerGrace
 
             PlayerControl.Add(playerName);
             Context.Respond($"{playerName} successfully added");
+            Log.Info($"{playerName} successfully added");
         }
 
         [Command("grace remove", "Revoke players extended leave")]
@@ -28,9 +31,15 @@ namespace VIKPlayerGrace
         public void GraceRemove(string playerName)
         {
             var playerId = GetFromSession.GetPlayerIdByName(playerName);
-            PlayerControl.Remove(playerId);
+            if (DupeCheck.IsDupe(playerId))
+            {             
+                PlayerControl.Remove(playerId);
+                Context.Respond($"Player {playerName} successfully removed");
+                Log.Info($"Player {playerName} successfully removed");
+                return;
+            }
 
-            Context.Respond($"{playerName} successfully removed");
+            Context.Respond($"Player {playerName} not found");
         }
     }
 }

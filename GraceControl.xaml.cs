@@ -50,6 +50,7 @@ namespace VIKPlayerGrace
                 return;
 
             PlayerControl.Remove(selectedDatagridRow.PlayerId);
+            Log.Info($"Player manually removed");
             ButtonDelete.IsEnabled = false;
         }
 
