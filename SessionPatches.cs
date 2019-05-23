@@ -10,7 +10,7 @@ namespace VIKPlayerGrace
         public static readonly Logger Log = LogManager.GetLogger("PlayerGrace SessionPatches");
 
         /// <summary>
-        /// Loads all players from config file and applies to the running session 
+        /// Loads all players from config file and applies to the running session
         /// </summary>
         public static void ApplySession()
         {
@@ -18,7 +18,7 @@ namespace VIKPlayerGrace
                 return;
 
             PlayersList.PlayerList.Clear();
-            foreach (var player in GraceControl.Plugin.Config.PlayersOnLeave) 
+            foreach (var player in GraceControl.Plugin.Config.PlayersOnLeave)
             {
                 // Add Players from file to List<PlayerData>
                 PlayersList.PlayerList.Add(new PlayerData
@@ -41,12 +41,14 @@ namespace VIKPlayerGrace
                         identity.LastLoginTime = DateTime.Now;
 
                     // Remove Players that has logged back in
-                    if (identity.LastLogoutTime > playerData.GraceGrantedAt && GraceControl.Plugin.Config.AutoRemove)
+                    if (playerData.PlayerId == identity.IdentityId
+                        && identity.LastLogoutTime > playerData.GraceGrantedAt
+                        && GraceControl.Plugin.Config.AutoRemove)
+
                     {
                         PlayerControl.Remove(playerData.PlayerId);
                         Log.Info($"Player {playerData.PlayerName} AutoRemoved. Last logout was {identity.LastLogoutTime}");
                     }
-                        
                 }
             }
         }
